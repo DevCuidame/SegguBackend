@@ -20,6 +20,7 @@ const UserService = {
     const salt = await bcrypt.genSalt(10);
     userData.password = await bcrypt.hash(userData.password, salt);
     userData.token = crypto.randomBytes(32).toString('hex');
+    userData.img_profile_path = saveBase64File(userData.img_profile_path, "profile_" + userData.username);
 
     return UserRepository.create(userData);
   },

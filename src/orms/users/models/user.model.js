@@ -20,6 +20,10 @@ const User = db.define('User', {
     type: DataTypes.STRING(50),
     allowNull: false,
   },
+  img_profile_path: {
+    type: DataTypes.STRING(255),
+    allowNull: true,
+  },
   citizenship_card: {
     type: DataTypes.STRING(15),
     allowNull: false,

@@ -1,24 +1,24 @@
 const fs = require('fs');
 const path = require('path');
 
-const saveBase64Image = (imageBase64, fileName) => {
+const saveBase64File = (fileBase64, fileName) => {
   return new Promise((resolve, reject) => {
-    if (!imageBase64 || !fileName) {
-      return reject('Image data and file name are required.');
+    if (!fileBase64 || !fileName) {
+      return reject('File data and file name are required.');
     }
 
-    const imageBuffer = Buffer.from(imageBase64, 'base64');
+    const fileBuffer = Buffer.from(fileBase64, 'base64');
     const filePath = path.join(__dirname, '../../uploads', fileName);
 
-    fs.writeFile(filePath, imageBuffer, (err) => {
+    fs.writeFile(filePath, fileBuffer, (err) => {
       if (err) {
-        return reject('Failed to save the image.');
+        return reject('Failed to save the file.');
       }
-      resolve('Image uploaded successfully.');
+      resolve(filePath); // Retorna la ruta del archivo guardado
     });
   });
 };
 
 module.exports = {
-  saveBase64Image,
+  saveBase64File,
 };
