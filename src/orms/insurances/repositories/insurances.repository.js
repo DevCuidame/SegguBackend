@@ -19,7 +19,7 @@ const InsuranceRepository = {
   },
   
   getByUserId: async (id) => {
-    const insurance = await Insurance.findOne({
+    const insurance = await Insurance.findAll({
       where: { user_id: id },
       include: [
         {
