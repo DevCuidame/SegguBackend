@@ -10,7 +10,8 @@ class ActiveRepository {
   }
 
   async create(data) {
-    return await Active.create(data);
+    const active =  await Active.create(data);
+    return active.active_id;
   }
 
   async update(id, data) {

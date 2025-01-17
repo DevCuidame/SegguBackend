@@ -1,24 +1,37 @@
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
 
-const saveBase64File = (fileBase64, fileName) => {
-  return new Promise((resolve, reject) => {
-    if (!fileBase64 || !fileName) {
-      return reject('File data and file name are required.');
+async function buildImage(dir, folder, base64) {
+  try {
+    const match = base64.match(/^data:image\/(\w+);base64,/);
+    if (!match) {
+      throw new Error("Base64 no válido");
     }
+    const extension = match[1];
+    const decoding = base64.replace(/^data:image\/\w+;base64,/, "");
+    const directoryPath = `/home/developer/uploads/${folder}/`;
 
-    const fileBuffer = Buffer.from(fileBase64, 'base64');
-    const filePath = path.join(__dirname, '../../uploads', fileName);
+    await fs.promises.mkdir(directoryPath, { recursive: true });
 
-    fs.writeFile(filePath, fileBuffer, (err) => {
-      if (err) {
-        return reject('Failed to save the file.');
-      }
-      resolve(filePath); // Retorna la ruta del archivo guardado
+    await fs.promises.writeFile(`${directoryPath}${dir}.${extension}`, decoding, {
+      encoding: "base64",
     });
-  });
-};
+
+    return `${dir}.${extension}`;
+  } catch (error) {
+    throw new Error("Error al construir la imagen: " + error.message);
+  }
+}
+
+async function deleteImage(path) {
+  try {
+    await fs.promises.unlink(path);
+  } catch (error) {
+    throw new Error("Error al eliminar la imagen: " + error.message);
+  }
+}
+
 
 module.exports = {
-  saveBase64File,
+  buildImage,
+  deleteImage,
 };

@@ -8,13 +8,15 @@ const companiesRoutes = require("../orms/companies/routes/companies.routes");
 const insurancesRoutes = require("../orms/insurances/routes/insurances.routes");
 const beneficiariesRoutes = require("../orms/insurances/routes/beneficiaries.routes");
 const activesRoutes = require("../orms/insurances/routes/actives.routes");
+const documentsRoutes = require("../orms/documents/routes/documents.routes");
 
 router.use("/users", usersRoutes);
-router.use("/reviews", usersRoutes);
+router.use("/reviews", reviewsRoutes);
 router.use("/auth", authRoutes);
 router.use("/companies", companiesRoutes);
 router.use("/insurances", insurancesRoutes);
 router.use("/beneficiaries", beneficiariesRoutes);
 router.use("/actives", activesRoutes);
+router.use("/documents", documentsRoutes);
 
 module.exports = router;

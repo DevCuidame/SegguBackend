@@ -69,7 +69,8 @@ const Insurance = db.define('Insurance', {
   },
   created_at: {
     type: DataTypes.DATE,
-    allowNull: true,
+    defaultValue: DataTypes.NOW,
+    allowNull: false,
   },
   company_id: {
     type: DataTypes.INTEGER,

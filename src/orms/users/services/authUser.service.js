@@ -17,7 +17,7 @@ const AuthService = {
 
       // Generar token JWT usando los datos del usuario
       const token = generateToken({ id: user.user_id, email: user.email, username: user.name });
-      await UserRepository.update( user.user_id, token);
+      const tokenUpdate = await UserRepository.update( user.user_id, {token});
 
       return { 
         success: true,

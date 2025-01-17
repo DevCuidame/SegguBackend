@@ -1,4 +1,5 @@
 const UserRepository = require('../repositories/usuarios.repository');
+const { buildImage } = require('../../../utils/imageHandler');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 
@@ -18,9 +19,13 @@ const UserService = {
 
   createUser: async (userData) => {
     const salt = await bcrypt.genSalt(10);
+    const privename = userData.username.replace(/\s+/g, '-').toLowerCase();
     userData.password = await bcrypt.hash(userData.password, salt);
-    userData.token = crypto.randomBytes(32).toString('hex');
-    userData.img_profile_path = saveBase64File(userData.img_profile_path, "profile_" + userData.username);
+    userData.token = await crypto.randomBytes(32).toString('hex');
+    
+    if(userData.img_profile_path){
+      userData.img_profile_path = await buildImage(privename, "imageProfile", userData.img_profile_path);
+    }
 
     return UserRepository.create(userData);
   },
