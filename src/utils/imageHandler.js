@@ -8,7 +8,7 @@ async function buildImage(dir, folder, base64) {
     }
     const extension = match[1];
     const decoding = base64.replace(/^data:image\/\w+;base64,/, "");
-    const directoryPath = `/home/developer/uploads/${folder}/`;
+    const directoryPath = `../uploads/images/${folder}/`;
 
     await fs.promises.mkdir(directoryPath, { recursive: true });
 
@@ -22,9 +22,9 @@ async function buildImage(dir, folder, base64) {
   }
 }
 
-async function deleteImage(path) {
+async function deleteImage(folder, path) {
   try {
-    await fs.promises.unlink(path);
+    await fs.promises.unlink(`../uploads/images/${folder}/${path}`);
   } catch (error) {
     throw new Error("Error al eliminar la imagen: " + error.message);
   }

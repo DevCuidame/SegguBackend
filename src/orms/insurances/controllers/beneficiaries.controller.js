@@ -27,9 +27,9 @@ class BeneficiaryController {
       const data = req.body;
 
       // Procesar imagen si está presente
-      if (data.img_profile_path) {
+      if (data.img_person) {
         const privename = data.name.replace(/\s+/g, '-').toLowerCase();
-        data.img_profile_path = await buildImage(privename, 'imageBeneficiary', data.img_profile_path);
+        data.img_person = await buildImage(privename, 'imageBeneficiary', data.img_person);
       }
 
       const beneficiary = await BeneficiaryService.create(data);

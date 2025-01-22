@@ -9,7 +9,7 @@ const Beneficiary = db.define(
       primaryKey: true,
       autoIncrement: true,
     },
-    img_profile_path: {
+    img_person: {
       type: DataTypes.STRING(150),
       allowNull: true,
     },

@@ -1,6 +1,5 @@
 // src/controllers/insurances.controller.js
 const InsuranceService = require('../services/insurances.service');
-const CompanyService = require('../../companies/services/companies.service')
 
 const InsuranceController = {
   getAll: async (req, res) => {
