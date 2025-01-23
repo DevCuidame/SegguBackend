@@ -2,6 +2,8 @@ const UserRepository = require('../repositories/usuarios.repository');
 const { buildImage, deleteImage } = require('../../../utils/imageHandler');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
+const path = require("path");
+const fs = require("fs");
 
 const UserService = {
   getAllUsers: async () => {
@@ -14,7 +16,46 @@ const UserService = {
   },
 
   getUserById: async (id) => {
-    return UserRepository.getById(id);
+    const user = await UserRepository.getById(id);
+  
+    // Si no tiene una imagen de perfil, retornar el usuario tal cual
+    if (!user.img_profile_path) {
+      return user;
+    }
+  
+    const imagePath = path.resolve(`../uploads/images/imageProfile/${user.img_profile_path}`);
+  
+    // Verificar si la imagen existe en el sistema de archivos
+    if (!fs.existsSync(imagePath)) {
+      user.img_profile_path = null;
+      return user;
+    }
+  
+    // Leer la imagen desde el sistema de archivos
+    const imageBuffer = fs.readFileSync(imagePath);
+    let base64Image = imageBuffer.toString("base64");
+  
+    // Verificar si la cadena base64 ya tiene el prefijo 'data:image/...'
+    const fileExtension = path.extname(user.img_profile_path).toLowerCase();
+  
+    let mimeType = '';
+    if (fileExtension === '.jpg' || fileExtension === '.jpeg') {
+      mimeType = 'image/jpeg';
+    } else if (fileExtension === '.png') {
+      mimeType = 'image/png';
+    } else if (fileExtension === '.gif') {
+      mimeType = 'image/gif';
+    }
+  
+    // Si no tiene el prefijo 'data:image/', agregarlo
+    if (mimeType && !base64Image.startsWith(`data:${mimeType};base64,`)) {
+      base64Image = `data:${mimeType};base64,${base64Image}`;
+    }
+  
+    // Asignar el base64 con el prefijo al campo de la imagen
+    user.img_profile_path = base64Image;
+  
+    return user;
   },
 
   createUser: async (userData) => {
@@ -44,7 +85,7 @@ const UserService = {
   
     // Verificar si hay una nueva imagen
     if (userData.img_profile_path) {
-      const privateName = userData.username.replace(/\s+/g, '-').toLowerCase();
+      const privateName = user.username.replace(/\s+/g, '-').toLowerCase();
       
       // Eliminar la imagen anterior si existe
       if (user.img_profile_path) {

@@ -21,7 +21,7 @@ const User = db.define('User', {
     allowNull: false,
   },
   img_profile_path: {
-    type: DataTypes.STRING(255),
+    type: DataTypes.TEXT,
     allowNull: true,
   },
   citizenship_card: {

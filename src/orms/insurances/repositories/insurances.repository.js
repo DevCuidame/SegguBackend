@@ -24,7 +24,7 @@ const InsuranceRepository = {
       include: [
         {
           model: Company,
-          attributes: ['company_id', 'name', 'address'],
+          attributes: ['company_id', 'name', 'address', 'phone_number_asist'],
         },
       ],
     });

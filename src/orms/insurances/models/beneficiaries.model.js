@@ -10,7 +10,7 @@ const Beneficiary = db.define(
       autoIncrement: true,
     },
     img_person: {
-      type: DataTypes.STRING(150),
+      type: DataTypes.TEXT,
       allowNull: true,
     },
     name: {
